@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import copy
-from collections import Mapping
+from collections import Mapping, OrderedDict
 
 from six import iteritems
 
@@ -163,7 +163,7 @@ def collapsed_properties(model_spec, swagger_spec):
     :returns: dict
     """
 
-    properties = {}
+    properties = OrderedDict()
 
     # properties may or may not be present
     if 'properties' in model_spec:

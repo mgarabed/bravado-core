@@ -2,6 +2,7 @@
 import abc
 import logging
 from warnings import warn
+from collections import OrderedDict
 
 import six
 from six import iteritems
@@ -300,7 +301,7 @@ class Model(object):
         # Create the attribute value dictionary
         # We need bypass the overloaded __setattr__ method
         # Note the name mangling!
-        object.__setattr__(self, '_Model__dict', dict())
+        object.__setattr__(self, '_Model__dict', OrderedDict())
 
         # Additional property names in dct
         additional = set(dct).difference(self._properties)
@@ -409,7 +410,7 @@ class Model(object):
         """Return properties (including additional)."""
         s = [
             "{0}={1!r}".format(attr_name, self[attr_name])
-            for attr_name in sorted(self.__dict.keys())
+            for attr_name in self.__dict.keys()
             if attr_name in self
         ]
         return "{0}({1})".format(self.__class__.__name__, ', '.join(s))
@@ -430,7 +431,7 @@ class Model(object):
         :rtype: dict
         """
 
-        dct = dict()
+        dct = OrderedDict()
         for attr_name, attr_val in iteritems(self.__dict):
             if attr_name not in self._properties and not additional_properties:
                 continue
